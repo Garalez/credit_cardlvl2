@@ -533,7 +533,7 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"jUTag":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-var _inputmask = require("inputmask");
+/* eslint-disable max-len */ var _inputmask = require("inputmask");
 var _inputmaskDefault = parcelHelpers.interopDefault(_inputmask);
 const name = document.getElementById("name");
 const cardnumber = document.getElementById("cardnumber");
@@ -549,6 +549,8 @@ const svgExpire = document.getElementById("svgexpire");
 const lightcolor = document.querySelectorAll(".lightcolor");
 const darkcolor = document.querySelectorAll(".darkcolor");
 const creditcard = document.querySelector(".creditcard");
+const submitBtn = document.querySelector(".submit-btn");
+const paymentTitle = document.querySelector(".payment-title");
 // Что-бы перевернуть карту используйте класс flipped для элемента с классом creditcard
 // данные для определения типа карты
 // для вставки логотипа и иконки уже полученны элементы выше ccicon и cclogo
@@ -697,6 +699,32 @@ const events = ()=>{
     });
 };
 events();
+const validator = ()=>{
+    let validFlag = true;
+    const testResultTitle = document.createElement("h2");
+    if (name.value) {
+        const validName = /^[A-ZА-ЯЁa-zа-яё][a-zа-яё]+ [A-ZА-ЯЁa-zа-яё][a-zа-яё]+$/;
+        if (!name.value.match(validName)) validFlag = false;
+    }
+    if (cardnumber.value) {
+        const rowCardNumber = cardnumber.value.replace(/ /g, "");
+        const validCardNumber = /[0-9]{14,16}/;
+        if (!rowCardNumber.match(validCardNumber)) validFlag = false;
+    }
+    if (securitycode.value) {
+        const validSecuritycode = /[0-9]{3,3}/;
+        if (!securitycode.value.match(validSecuritycode)) validFlag = false;
+    }
+    validFlag ? testResultTitle.textContent = "\u0414\u0430\u043D\u043D\u044B\u0435 \u0432\u0430\u043B\u0438\u0434\u043D\u044B" : testResultTitle.textContent = "\u0414\u0430\u043D\u043D\u044B\u0435 \u043D\u0435 \u0432\u0430\u043B\u0438\u0434\u043D\u044B";
+    paymentTitle.append(testResultTitle);
+    submitBtn.disabled = true;
+    const removeResultTitle = setTimeout(()=>{
+        testResultTitle.remove();
+        submitBtn.disabled = false;
+        clearTimeout(removeResultTitle);
+    }, 2000);
+};
+submitBtn.addEventListener("click", validator);
 
 },{"inputmask":"gyYno","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gyYno":[function(require,module,exports) {
 /*!
